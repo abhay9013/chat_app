@@ -12,7 +12,7 @@ export const ProfileProvider = ({ children }) => {
     let userRef;
     const authUnSub = auth.onAuthStateChanged(authObj => {
       if (authObj) {
-        userRef = database.ref(`/profiles/${authObj.uid}`);
+        userRef = database.ref(`/profiles/${authObj.uid}`); //these callback wiuill be fired every time if something under this ref changes
         userRef.on('value', snap => {
           const { name, createdAt } = snap.val();
           const data = {
