@@ -1,9 +1,15 @@
-import { Button, Drawer } from 'rsuite';
+import { Button, Divider, Drawer } from 'rsuite';
 
 import { useProfile } from '../../context/profilecontext';
+import Editableinput from '../Editableinput';
 
 const Dashboard = ({ onSignOut }) => {
   const { profile } = useProfile();
+
+  const onSave = async newData => {
+    console.log(newData);
+  };
+
   return (
     <>
       <Drawer.Header>
@@ -12,6 +18,13 @@ const Dashboard = ({ onSignOut }) => {
 
       <Drawer.Body>
         <h3>hey, {profile.name}</h3>
+        <Divider />
+        <Editableinput
+          name="nickname"
+          initialValue={profile.name}
+          onSave={onSave}
+          label={<h6 className="mb-2">NickName</h6>}
+        />
       </Drawer.Body>
 
       <Drawer.Footer>
