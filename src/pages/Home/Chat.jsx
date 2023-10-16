@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 
 import { useRooms } from '../../context/roomscontext';
 import { Loader } from 'rsuite';
+import { CurrentRoomProvider } from '../../context/currentroomcontext';
 
 const Chat = () => {
   const { chatId } = useParams();
@@ -20,8 +21,15 @@ const Chat = () => {
     return <h6 className="text-center mt-page">Chay {chatId} not found!!</h6>;
   }
 
+  const { name, description } = currentRoom;
+
+  const currentRoomData = {
+    name,
+    description,
+  };
+
   return (
-    <>
+    <CurrentRoomProvider data={currentRoomData}>
       <div className="chat-top">
         <ChatTop />
       </div>
@@ -31,7 +39,7 @@ const Chat = () => {
       <div className="chat-bottom">
         <ChatBottom />
       </div>
-    </>
+    </CurrentRoomProvider>
   );
 };
 
