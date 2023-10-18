@@ -7,6 +7,7 @@ const Editableinput = ({
   label = null,
   placeholder = 'Write your value',
   emptyMsg = 'Input is Empty',
+  wrapperClassName = '',
   ...inpitProps
 }) => {
   const [input, setInput] = useState(initialValue);
@@ -35,7 +36,7 @@ const Editableinput = ({
   };
 
   return (
-    <div>
+    <div className={wrapperClassName}>
       {label}
       <InputGroup>
         <Input
