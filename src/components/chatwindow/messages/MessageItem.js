@@ -1,18 +1,18 @@
 import TimeAgo from 'timeago-react';
 import { Button } from 'rsuite';
 import { memo } from 'react';
+import { auth } from '../../../misc/firebase';
 import { useHover } from '@uidotdev/usehooks';
 
 import ProfileAvatar from '../../ProfileAvatar';
 import ProfileInfoBtnModal from './ProfileInfoBtnModal';
 import PresenceDot from '../../PresenceDot';
 import { useCurrentRoom } from '../../../context/currentroomcontext';
-
-import { auth } from '../../../misc/firebase';
+import { useMediaQuery } from '../../../misc/custom-hooks';
 import IconBtnControl from './IconBtnControl';
 
-const MessageItem = ({ message, handleAdmin }) => {
-  const { author, createdAt, text } = message;
+const MessageItem = ({ message, handleAdmin, handleLike }) => {
+  const { author, createdAt, text, likes, likeCount } = message;
 
   const [selfRef, isHovered] = useHover();
 
@@ -23,6 +23,12 @@ const MessageItem = ({ message, handleAdmin }) => {
   const isAuthor = auth.currentUser.uid === author.uid;
 
   const canGrantAdmin = isAdmin && !isAuthor;
+
+  const isLiked = likes && Object.keys(likes).includes(auth.currentUser.uid);
+  //if it is liked bu curr user or not
+
+  const isMobile = useMediaQuery('(max-width: 992px)');
+  const canShowIcons = isMobile || isHovered;
 
   return (
     <li
@@ -57,13 +63,12 @@ const MessageItem = ({ message, handleAdmin }) => {
         <TimeAgo datetime={createdAt} className="font-normal text-black ml-2" />
 
         <IconBtnControl
-          // eslint-disable-next-line no-constant-condition
-          {...(true ? { color: 'red' } : {})}
-          isVisible
+          {...(isLiked ? { color: 'red' } : {})}
+          isVisible={canShowIcons}
           iconName="heart"
           tooltip="Like the message"
-          onClick={() => {}}
-          badgeContent={5}
+          onClick={() => handleLike(message.id)}
+          badgeContent={likeCount}
         />
       </div>
       <div>
