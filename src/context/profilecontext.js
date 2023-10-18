@@ -42,7 +42,8 @@ export const ProfileProvider = ({ children }) => {
 
         userStatusRef = database.ref(`/status/${authObj.uid}`);
         database.ref('.info/connected').on('value', snapshot => {
-          if (snapshot.val() == false) {
+          if (!!snapshot.val() == false) {
+            //!! to convert it into boolean
             return;
           }
 
