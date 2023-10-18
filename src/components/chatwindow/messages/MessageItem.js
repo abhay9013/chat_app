@@ -9,6 +9,7 @@ import PresenceDot from '../../PresenceDot';
 import { useCurrentRoom } from '../../../context/currentroomcontext';
 
 import { auth } from '../../../misc/firebase';
+import IconBtnControl from './IconBtnControl';
 
 const MessageItem = ({ message, handleAdmin }) => {
   const { author, createdAt, text } = message;
@@ -54,6 +55,16 @@ const MessageItem = ({ message, handleAdmin }) => {
         </ProfileInfoBtnModal>
 
         <TimeAgo datetime={createdAt} className="font-normal text-black ml-2" />
+
+        <IconBtnControl
+          // eslint-disable-next-line no-constant-condition
+          {...(true ? { color: 'red' } : {})}
+          isVisible
+          iconName="heart"
+          tooltip="Like the message"
+          onClick={() => {}}
+          badgeContent={5}
+        />
       </div>
       <div>
         <span className="word-breal-all">{text}</span>
