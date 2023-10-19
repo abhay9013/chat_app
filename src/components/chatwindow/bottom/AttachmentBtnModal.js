@@ -6,7 +6,7 @@ import { useModalState } from '../../../misc/custom-hooks';
 import { storage } from '../../../misc/firebase';
 
 const MAX_FILE_SIZE = 1000 * 1024 * 5;
-const AttachmentBtnModal = () => {
+const AttachmentBtnModal = ({ afterUpload }) => {
   const { isOpen, close, open } = useModalState();
   const { chatId } = useParams();
   const [fileList, setFileList] = useState([]);
@@ -20,9 +20,10 @@ const AttachmentBtnModal = () => {
     setFileList(filtered);
   };
 
-  const onUpload = async ({ afterUpload }) => {
+  const onUpload = async () => {
     try {
       const uploadPromises = fileList.map(f => {
+        //array of promises
         return storage
           .ref(`/chat/${chatId}`)
           .child(Date.now() + f.name)
@@ -34,6 +35,7 @@ const AttachmentBtnModal = () => {
       const uploadSnapshots = await Promise.all(uploadPromises);
 
       const shapePromises = uploadSnapshots.map(async snap => {
+        //array of promises for url
         return {
           contentType: snap.metadata.contentType,
           name: snap.metadata.name,
@@ -52,6 +54,7 @@ const AttachmentBtnModal = () => {
       Alert.error(err.message, 4000);
     }
   };
+
   return (
     <>
       <InputGroup.Button onClick={open}>
